@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Models;
+
+use Database\Factories\DocenteFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Docente extends Model
+{
+    /** @use HasFactory<DocenteFactory> */
+    use HasFactory;
+
+    protected $guarded = [];
+
+    /**
+     * RN-02: grupos que imparte el docente.
+     *
+     * @return BelongsToMany<Grupo, $this>
+     */
+    public function grupos(): BelongsToMany
+    {
+        return $this->belongsToMany(Grupo::class, 'grupo_docente', 'docente_id', 'grupo_id');
+    }
+
+    /**
+     * RN-03: estudiantes de los que el docente es profesor consejero.
+     *
+     * @return HasMany<Estudiante, $this>
+     */
+    public function estudiantes(): HasMany
+    {
+        return $this->hasMany(Estudiante::class, 'consejero_id');
+    }
+}
